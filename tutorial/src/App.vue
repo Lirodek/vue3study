@@ -3,8 +3,8 @@
   <div class="black-bg" v-if="isModalOpen == 1" >
     <div class="white-bg">
       <h4>{{modalStat.title}}</h4>
-      <img class="room-img" :src="getImageSource(modalStat.img)">
-      <p>상세페이지 내용</p>
+      <img class="room-img" :src="modalStat.img">
+      <p>{{modalStat.cont}}</p>
       <button @click="isModalOpen = !isModalOpen">닫기</button>
     </div>
   </div>
@@ -13,11 +13,11 @@
     <a v-for="menu in menues" :key="menu">{{menu}}</a>
   </div>
 
-  <div v-for="item in productArray" :key="item">
-    <img class="room-img" :src="getImageSource(item.img)" alt="">
-    <h4 @click="openModal(item);isModalOpen = !isModalOpen">{{ item.title }} 원룸</h4>
+  <div v-for="item in oneRooms" :key="item">
+    <img class="room-img" :src="item.image" alt="">
+    <h4 @click="openModal(item); isModalOpen = !isModalOpen" >{{ item.title }} 원룸</h4>
     <p>{{item.price}} 만원</p>
-    <button @click="increase(item)">허위매물신고</button> <span>신고수 : {{ item.report }}</span>
+
   </div>
   
   
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import oneRoomData from './assets/datas.js'
+
 class Product{
   constructor(title, price, img){
     this.title = title;
@@ -44,24 +46,27 @@ export default {
   name: 'App',
   data(){
     return{
+      oneRooms : oneRoomData,
       isModalOpen : false,
       modalStat : modalStat,
       productArray : productArray,
       menues : ['Home', 'Shop', 'About'],
+      
     }
   },
   methods:{
     openModal(item){
       //isModalOpen = !isModalOpen
       modalStat.title = item.title
-      modalStat.img = item.img
+      modalStat.img = item.image
+      modalStat.cont = item.content
 
     },
     increase(item){
       item.report++
     },
     getImageSource(imageName) {
-      return require(`./assets/${imageName}.jpg`);
+      return imageName
     },
   },
   components: {
