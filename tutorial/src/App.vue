@@ -1,15 +1,24 @@
 <template>
+    <transition name="fade">
+        <Modal
+            @closeModal="closeModal()"
+            :modalStat="modalStat"
+            :isModalOpen="isModalOpen"
+        />
+    </transition>
 
-  <Modal @closeModal="closeModal()" :modalStat="modalStat" :isModalOpen="isModalOpen"/>
-  
-  <div class="menu">
-    <a v-for="menu in menues" :key="menu">{{menu}}</a>
-  </div>
+    <div class="menu">
+        <a v-for="menu in menues" :key="menu">{{menu}}</a>
+    </div>
 
-  <Discount />
+    <Discount />
 
-  <Card @openModal="openModal($event); " :oneRoom="item" v-for="item in oneRooms" :key="item"/>
-
+    <Card
+        @openModal="openModal($event); "
+        :oneRoom="item"
+        v-for="item in oneRooms"
+        :key="item"
+    />
 </template>
 
 <script>
@@ -42,7 +51,7 @@ export default {
       modalStat : modalStat,
       productArray : productArray,
       menues : ['Home', 'Shop', 'About'],
-      
+
     }
   },
   methods:{
@@ -75,13 +84,28 @@ export default {
 </script>
 
 <style>
+.fade-leave-from{ opacity: 1; }
+.fade-leave-active{ transition: all 1s; }
+.fade-leave-to{ opacity: 0; }
+
+
+.fade-enter-from{ transform: translateY(-1000px); }
+.fade-enter-active{ transition: all 1s; }
+.fade-enter-to{ transform: translateY(0px); }
+
+.start{
+  opacity: 0;
+  transition: all 1s;
+}
+.end {opacity: 1;}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  
+
 }
 
 .menu{
@@ -117,5 +141,4 @@ div{box-sizing: border-box;}
   border-radius: 8px;
   padding: 20px;
 }
-
 </style>
