@@ -1,31 +1,22 @@
 <template>
 
-  <div class="black-bg" v-if="isModalOpen == 1" >
-    <div class="white-bg">
-      <h4>{{modalStat.title}}</h4>
-      <img class="room-img" :src="modalStat.img">
-      <p>{{modalStat.cont}}</p>
-      <button @click="isModalOpen = !isModalOpen">닫기</button>
-    </div>
-  </div>
+  <Modal @closeModal="closeModal()" :modalStat="modalStat" :isModalOpen="isModalOpen"/>
   
   <div class="menu">
     <a v-for="menu in menues" :key="menu">{{menu}}</a>
   </div>
 
-  <div v-for="item in oneRooms" :key="item">
-    <img class="room-img" :src="item.image" alt="">
-    <h4 @click="openModal(item); isModalOpen = !isModalOpen" >{{ item.title }} 원룸</h4>
-    <p>{{item.price}} 만원</p>
+  <Discount />
 
-  </div>
-  
-  
+  <Card @openModal="openModal($event); " :oneRoom="item" v-for="item in oneRooms" :key="item"/>
 
 </template>
 
 <script>
 import oneRoomData from './assets/datas.js'
+import Discount from './component/discount.vue'
+import Modal from './component/Modal.vue'
+import Card from './component/Card.vue'
 
 class Product{
   constructor(title, price, img){
@@ -56,11 +47,15 @@ export default {
   },
   methods:{
     openModal(item){
-      //isModalOpen = !isModalOpen
       modalStat.title = item.title
       modalStat.img = item.image
       modalStat.cont = item.content
+      modalStat.price= item.price
+      this.isModalOpen=true
 
+    },
+    closeModal(){
+      this.isModalOpen = false;
     },
     increase(item){
       item.report++
@@ -70,6 +65,11 @@ export default {
     },
   },
   components: {
+    Discount,
+    Modal,
+    Card,
+
+
   }
 }
 </script>
@@ -102,6 +102,8 @@ export default {
 body{margin: 0;}
 
 div{box-sizing: border-box;}
+
+.discount {background: #eee; padding: 10px; margin: 10px; border-radius: 5px;}
 
 .black-bg{
   width: 100%; height: 100%;
