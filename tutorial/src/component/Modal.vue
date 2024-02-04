@@ -27,6 +27,11 @@ export default {
           this.month = 1
           return
         }
+        if (tester == 2) {
+          alert('우리는 2개월은 받지않습니다.')
+          this.month = 1
+          return
+        }
         if (tester > 12) {
           alert('13개월이상 렌탈이 불가능합니다.')
           this.month = 12

@@ -11,7 +11,17 @@
         <a v-for="menu in menues" :key="menu">{{menu}}</a>
     </div>
 
-    <Discount />
+    <Discount
+        :discount2="discount2"
+        @discountMinus="discountMinus()"
+        v-if="showDiscount == true"
+    />
+
+    <button @click="priceSort('A')">가격순 오름차순 으로 정렬</button>
+    <button @click="priceSort('B')">가격순 내림차순 으로 정렬</button>
+    <button @click="priceSort('C')">가격순 가나다순 으로 정렬</button>
+    <button @click="priceSort('D')">가격순 다나가순 으로 정렬</button>
+    <button @click="sortBack">원래 정렬로 되돌리기</button>
 
     <Card
         @openModal="openModal($event); "
@@ -42,10 +52,15 @@ productArray[2] = new Product('마포구원룸', 50, 'room2')
 
 let modalStat = new Object();
 
+
+
 export default {
   name: 'App',
   data(){
-    return{
+    return {
+      discount2: 30,
+      showDiscount: true,
+      oneRoomsOriginal : [...oneRoomData],
       oneRooms : oneRoomData,
       isModalOpen : false,
       modalStat : modalStat,
@@ -72,13 +87,27 @@ export default {
     getImageSource(imageName) {
       return imageName
     },
+    priceSort(type) {
+      if(type == 'A')       // 가격오름차정렬
+        this.oneRooms.sort((a, b) => a.price - b.price)
+      else if(type == 'B')  // 가격내림차정렬
+        this.oneRooms.sort((a, b) => b.price - a.price)
+      else if(type == 'C')  // 가나다 정렬
+        this.oneRooms.sort((a, b) => a.title.localeCompare(b.title))
+      else if(type == 'D')  // 다나가 정렬
+        this.oneRooms.sort((a, b) => b.title.localeCompare(a.title))
+    },
+    sortBack() {
+      this.oneRooms = [...this.oneRoomsOriginal];
+    },
+    discountMinus() {
+      this.discount2--
+    }
   },
   components: {
     Discount,
     Modal,
     Card,
-
-
   }
 }
 </script>
@@ -89,9 +118,9 @@ export default {
 .fade-leave-to{ opacity: 0; }
 
 
-.fade-enter-from{ transform: translateY(-1000px); }
+.fade-enter-from{ opacity: 0; }
 .fade-enter-active{ transition: all 1s; }
-.fade-enter-to{ transform: translateY(0px); }
+.fade-enter-to{ opacity: 1; }
 
 .start{
   opacity: 0;
