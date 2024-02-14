@@ -1,18 +1,28 @@
 <template>
   <Navbar />
-  <SlideBanner />
+  <div class="mt-4">
+    <router-view :posts="postsData"></router-view>
+  </div>
+
+  <!-- <ListVue :posts="postsData" /> -->
 </template>
 
 <script>
 import Navbar from './components/NavBar.vue'
-import SlideBanner from './components/SlideBanner.vue'
+// import ListVue from './components/List.vue'
+import postsData from './assets/data.js'
 
 export default {
   name: 'App',
   components: {
     Navbar,
-    SlideBanner,
-  }
+    // ListVue,
+  },
+  data() {
+    return {
+      postsData : postsData,
+    }
+  },
 }
 </script>
 
